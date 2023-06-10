@@ -29,3 +29,35 @@ textarea {
 textarea {
   resize: none;
 }
+
+
+.bkg-dark {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+
+.icon-day{
+
+  padding: 0;
+  width: 60px;
+  height: 24px;
+ border-radius: 194px;
+ outline: none;
+ border: none;
+  background-image: url(../img/icon-day.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.icon-night{
+
+  padding: 0;
+  width: 60px;
+  height: 24px;
+ border-radius: 194px;
+ outline: none;
+ border: none;
+  background-image: url(../img/icon-night.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+}

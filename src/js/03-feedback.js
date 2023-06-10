@@ -1,61 +1,74 @@
-import '../css/03-feedback.css';
-import throttle from 'lodash.throttle';
-
-
-
-
-const formEl = document.querySelector('form');
-
-let dataForm = {}
-
-const LOCAL_KEY = 'feedback-form-state';
-
-
-
-
-formEl.addEventListener('input', throttle(createItemLS, 500));
-
-formEl.addEventListener('submit', onSubmitCheck)
-
-
-
-restartPage();
-
-function createItemLS(even) {
-    dataForm[even.target.name] = even.target.value
-
-    const itemLocalStoreg = JSON.stringify(dataForm)
-
-    localStorage.setItem(LOCAL_KEY, itemLocalStoreg);
-
-
-
-}
-
-function restartPage() {
-  
-    try {
-        const formLogalStoreg = localStorage.getItem(LOCAL_KEY);
-        const objDataForm = JSON.parse(formLogalStoreg)
-        if (objDataForm) {
-           dataForm = objDataForm 
-            for (const key of formEl) {
-                if (dataForm[key.name]) {
-                    key.value = dataForm[key.name];
-                }
-            }
-         }
-     } catch (error) {
-         console.error('Get state error: ', error.message);
-     }
+const refs = {
+  switchIcon: document.getElementById('switch-icon'),
+    body: document.querySelector('body'),
+    iconDay: document.getElementById("icon-day"),
+    iconNight: document.getElementById("icon-night")
  
+};
+
+refs.switchIcon.addEventListener('click', switchColor);
+
+window.addEventListener('DOMContentLoaded', addClassColor)
+
+
+const KEY_LOCAL_STOREG = 'background';
+const value = 'value';
+
+
+
+
+function switchColor() {
+    switchIcon();
+    refs.body.classList.toggle('bkg-dark');
+    const audit = refs.body.classList.contains('bkg-dark');
+    
+    console.log(audit);
+    save(KEY_LOCAL_STOREG, audit);
 }
-     
 
 
-function onSubmitCheck(even) {
-    even.preventDefault();
-    console.log("Відправили форму!")
-    even.currentTarget.reset();
-    localStorage.removeItem(LOCAL_KEY)
- }
+function addClassColor() {
+
+    const localValue = load(KEY_LOCAL_STOREG);
+    console.log(localValue);
+    if (localValue) {
+        refs.body.classList.add('bkg-dark');
+        refs.switchIcon.classList.remove('icon-day');
+        refs.switchIcon.classList.add('icon-night');
+    }
+}
+
+
+
+function switchIcon() {
+    refs.switchIcon.classList.toggle('icon-day')
+    refs.switchIcon.classList.toggle('icon-night')
+
+}
+
+
+
+
+
+
+const save = (key, value) => {
+  try {
+    const serializedState = JSON.stringify(value);
+    localStorage.setItem(key, serializedState);
+  } catch (error) {
+    console.error('Set state error: ', error.message);
+  }
+};
+
+const load = key => {
+  try {
+    const serializedState = localStorage.getItem(key);
+    return serializedState === null ? undefined : JSON.parse(serializedState);
+  } catch (error) {
+    console.error('Get state error: ', error.message);
+  }
+};
+
+
+
+
